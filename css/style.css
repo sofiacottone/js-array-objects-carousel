@@ -1,0 +1,82 @@
+body {
+    height: 100vh;
+}
+
+img {
+    display: block;
+}
+
+.ms-carousel-container {
+    width: 1000px;
+    height: 600px;
+    position: relative;
+}
+
+.ms-image-wrapper {
+    width: 100%;
+    height: 100%;
+}
+
+.ms-image-wrapper img,
+.ms-thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.ms-image-wrapper img {
+    display: none;
+}
+
+.ms-image-wrapper.active img {
+    display: block;
+}
+
+.ms-text-wrapper {
+    position: absolute;
+    color: #fff;
+    bottom: 0;
+    right: 270px;
+}
+
+#thumbnails-container {
+    width: 25%;
+    height: 100%;
+    /* flex: 0; */
+    position: relative;
+}
+
+.ms-thumbnail {
+    width: 100%;
+    height: calc(100% / 5);
+    opacity: 0.5;
+    background-color: red;
+}
+
+.ms-thumbnail.active {
+    opacity: 1;
+}
+
+.ms-arrow {
+    position: absolute;
+    background-color: #ffffff60;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 30px;
+    height: 30px;
+    font-size: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    z-index: 10;
+    cursor: pointer;
+}
+
+.ms-arrow.previous {
+    top: 5px;
+}
+
+.ms-arrow.next {
+    bottom: 5px;
+}
