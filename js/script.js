@@ -37,7 +37,6 @@ const images = [
 ];
 
 let activeItem = 0;
-console.log(activeItem);
 
 // MILESTONE 1
 const imagesContainer = document.querySelector('#images-container');
@@ -52,8 +51,17 @@ images.forEach((image) => {
         <img src="${image.image}">
     </div>
     `;
-    console.log(newImage);
+    // console.log(newImage);
 
+    const newImageText = `
+    <div class="ms-text-wrapper text-end">
+        <h3>${image.title}</h3>
+        <p>${image.text}</p>
+    </div>
+    `;
+    console.log(newImageText);
+
+    imagesContainer.innerHTML += newImageText;
     imagesContainer.innerHTML += newImage;
 
     const newThumbnail = `
@@ -68,9 +76,13 @@ images.forEach((image) => {
 // aggiungo la classe active alla prima immagine
 const allImages = document.querySelectorAll('.ms-image-wrapper');
 allImages[activeItem].classList.add('active');
-
+// al primo testo
+const allImagesText = document.querySelectorAll('.ms-text-wrapper');
+allImagesText[activeItem].classList.add('active');
+// al primo thumbnail
 const allThumbnails = document.querySelectorAll('.ms-thumbnail');
 allThumbnails[activeItem].classList.add('active');
 
 console.log(allImages);
+console.log(allImagesText);
 console.log(allThumbnails);
