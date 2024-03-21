@@ -37,6 +37,11 @@ img {
     color: #fff;
     bottom: 0;
     right: 270px;
+    display: none;
+}
+
+.ms-text-wrapper.active {
+    display: block;
 }
 
 #thumbnails-container {
