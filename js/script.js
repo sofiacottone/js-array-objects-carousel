@@ -36,7 +36,7 @@ const images = [
     }
 ];
 
-let activeItem = images[0].image;
+let activeItem = 0;
 console.log(activeItem);
 
 // MILESTONE 1
@@ -64,3 +64,13 @@ images.forEach((image) => {
 
     thumbnailsContainer.innerHTML += newThumbnail;
 });
+
+// aggiungo la classe active alla prima immagine
+const allImages = document.querySelectorAll('.ms-image-wrapper');
+allImages[activeItem].classList.add('active');
+
+const allThumbnails = document.querySelectorAll('.ms-thumbnail');
+allThumbnails[activeItem].classList.add('active');
+
+console.log(allImages);
+console.log(allThumbnails);
