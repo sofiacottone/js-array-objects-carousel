@@ -3,19 +3,22 @@
 //  - titolo
 //  - descrizione
 // Creare un carosello come nella foto allegata.
-// Milestone 0:
+// Milestone 0: 
 // Come nel primo carosello realizzato, focalizziamoci prima sulla creazione del markup statico: costruiamo il container e inseriamo l'immagine grande in modo da poter stilare lo slider.
 // Milestone 1:
 // Ora rimuoviamo i contenuti statici e usiamo l’array di oggetti letterali per popolare dinamicamente il carosello.
 // Al click dell'utente sulle frecce verso alto o basso, l'immagine attiva diventerà visibile e dovremo aggiungervi titolo e testo.
 // Milestone 2:
 // Aggiungere il ciclo infinito del carosello. Ovvero se la miniatura attiva è la prima e l'utente clicca la freccia verso l'alto, la miniatura che deve attivarsi sarà l'ultima e viceversa per l'ultima miniatura se l'utente clicca la freccia verso il basso.
+// BONUS:
+// Una volta terminate tutte e 3 le milestone, potete contattare i tutor che vi assegneranno dei bonus.
+// Trovate in allegato lo screenshot, lo zip con le immagini e il file js che contiene l'array di oggetti.
 
 
 const images = [
     {
         image: 'img/01.webp',
-        title: 'Marvel\'s Spiderman Miles Morale',
+        title: 'Marvel\'s Spiderman Miles Morales',
         text: 'Experience the rise of Miles Morales as the new hero masters incredible, explosive new powers to become his own Spider-Man.',
     }, {
         image: 'img/02.webp',
@@ -36,53 +39,144 @@ const images = [
     }
 ];
 
+// MILESTONE 1
+// seleziono i contenitori dentro i quali andrò a stampare le immagini
+const imageContainer = document.getElementById('image-container');
+const thumbnailsContainer = document.getElementById('thumbnails-container');
+
+// creo una funzione per inserire le immagini dinamicamente
+generateImage(images, imageContainer, thumbnailsContainer);
+
 let activeItem = 0;
 
-// MILESTONE 1
-const imagesContainer = document.querySelector('#images-container');
-const thumbnailsContainer = document.querySelector('#thumbnails-container');
+// prendo tutte le immagini e le thumbnails e aggiungo la classe active alla prima immagine
+const allImages = document.querySelectorAll('.single-image');
+const allThumbs = document.querySelectorAll('.single-thumbnail');
 
-// prendo ogni oggetto nell'array e lo inserisco nel contenitore dell'immagine
-images.forEach((image) => {
-    // console.log(image);
+allImages[activeItem].classList.add('active');
+allThumbs[activeItem].classList.add('active');
 
-    const newImage = `
-    <div class="ms-image-wrapper">
-        <img src="${image.image}">
-    </div>
-    `;
-    // console.log(newImage);
+//gestione next arrow e previous-arrow
+const nextArrow = document.getElementById('arrow-next');
+const previousArrow = document.getElementById('arrow-previous');
 
-    const newImageText = `
-    <div class="ms-text-wrapper text-end">
-        <h3>${image.title}</h3>
-        <p>${image.text}</p>
-    </div>
-    `;
-    console.log(newImageText);
+// funzione per attivare il next button
+nextArrow.addEventListener('click', showNextImage);
 
-    imagesContainer.innerHTML += newImageText;
-    imagesContainer.innerHTML += newImage;
+// funzione per attivare il previous button
+previousArrow.addEventListener('click', showPreviousImage);
 
-    const newThumbnail = `
-    <div class="ms-thumbnail">
-        <img src="${image.image}">
-    </div>
-    `;
+//BONUS
+// gestione play button e stop button
+const playBtn = document.getElementById('play-btn');
+const stopBtn = document.getElementById('stop-btn');
 
-    thumbnailsContainer.innerHTML += newThumbnail;
+let isTimeSet;
+let playInterval;
+playBtn.addEventListener('click', play);
+stopBtn.addEventListener('click', stop);
+
+//BONUS 2
+// al click su ogni thumbnail modifico l'activeItem 
+allThumbs.forEach((thumbnail, index) => {
+    thumbnail.addEventListener('click', function () {
+        document.querySelector('.single-image.active').classList.remove('active');
+        document.querySelector('.single-thumbnail.active').classList.remove('active');
+
+        activeItem = index;
+
+        allImages[activeItem].classList.add('active');
+        allThumbs[activeItem].classList.add('active');
+    })
 });
 
-// aggiungo la classe active alla prima immagine
-const allImages = document.querySelectorAll('.ms-image-wrapper');
-allImages[activeItem].classList.add('active');
-// al primo testo
-const allImagesText = document.querySelectorAll('.ms-text-wrapper');
-allImagesText[activeItem].classList.add('active');
-// al primo thumbnail
-const allThumbnails = document.querySelectorAll('.ms-thumbnail');
-allThumbnails[activeItem].classList.add('active');
 
-console.log(allImages);
-console.log(allImagesText);
-console.log(allThumbnails);
+
+
+// #region FUNCTIONS
+
+// 1
+// funzione per stampare tutte le immagini nel DOM dinamicamente
+// images -> array di immagini da cui prendere le informazioni
+// imageContainer -> elemento del DOM in cui andare a stampare le immagini
+// thumbnailsContainer -> elemento del DOM in cui andare a stampare i thumbnails
+function generateImage(images, imageContainer, thumbnailsContainer) {
+    // prendo ogni oggetto nell'array e lo inserisco nel contenitore dell'immagine
+    images.forEach((images) => {
+
+        const newImage = `
+        <div class="single-image">
+            <img src="${images.image}">
+            <div class="text-container">
+                <h3>${images.title}</h3>
+                <p>${images.text}</p>
+            </div>
+        </div>
+        `;
+
+        imageContainer.innerHTML += newImage;
+
+
+        const newThumbnail = `
+        <img class="single-thumbnail" src="${images.image}">
+        `;
+
+        thumbnailsContainer.innerHTML += newThumbnail;
+    });
+}
+
+// 2
+// funzione per mostrare l'immagine successiva
+function showNextImage() {
+    // rimuovo la classe active dall'elemento corrente
+    // incremento l'indice 
+    // aggiungo la classe active al nuovo elemento da visualizzare
+
+    document.querySelector('.single-image.active').classList.remove('active');
+    document.querySelector('.single-thumbnail.active').classList.remove('active');
+
+    if (activeItem < images.length - 1) {
+        activeItem++;
+    } else {
+        activeItem = 0;
+    }
+
+    allImages[activeItem].classList.add('active');
+    allThumbs[activeItem].classList.add('active');
+}
+
+// 3
+// funzione per mostrare l'immagine precedente
+function showPreviousImage() {
+    // rimuovo la classe active dall'elemento corrente
+    // decremento l'indice 
+    // aggiungo la classe active al nuovo elemento da visualizzare
+    document.querySelector('.single-image.active').classList.remove('active');
+    document.querySelector('.single-thumbnail.active').classList.remove('active');
+
+    if (activeItem > 0) {
+        activeItem--;
+    } else {
+        activeItem = images.length - 1;
+    }
+
+    allImages[activeItem].classList.add('active');
+    allThumbs[activeItem].classList.add('active');
+}
+
+// 4
+// funzione per attivare l'intervallo
+function play() {
+    playInterval = setInterval(showNextImage, 3000);
+    isTimeSet = true
+}
+
+// 4
+// funzione per stoppare l'intervallo
+function stop() {
+    if (isTimeSet = true) {
+        clearInterval(playInterval);
+    }
+};
+
+// #endregion
