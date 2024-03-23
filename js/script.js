@@ -171,7 +171,7 @@ function play() {
     isTimeSet = true
 }
 
-// 4
+// 5
 // funzione per stoppare l'intervallo
 function stop() {
     if (isTimeSet = true) {
